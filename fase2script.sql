@@ -142,7 +142,7 @@ CREATE TABLE direccion_usuario (
 INSERT INTO usuarios (codigo_cliente, rol_id, genero, cui, fecha_nacimiento, estado_civil, nacionalidad,
                       primer_nombre, segundo_nombre, tercer_nombre, primer_apellido, segundo_apellido, apellido_casada)
 SELECT codigo_cliente,
-       2 AS rol_id,  -- Cambia este valor según el rol deseado (por ejemplo, 1 para Admin, 2 para Usuario)
+       2 AS rol_id,  
        genero,
        cui,
        fecha_nacimiento,
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS ocupaciones (
 INSERT INTO ocupaciones (nombre_ocupacion)
 SELECT DISTINCT ocupacion
 FROM clientes
-WHERE ocupacion IS NOT NULL;  -- Asegúrate de no insertar valores nulos
+WHERE ocupacion IS NOT NULL;  
 
 ALTER TABLE usuarios
 ADD COLUMN ocupaciones_id INT;
@@ -210,15 +210,15 @@ CREATE TABLE prestamo (
 
 INSERT INTO prestamo (usuario_id, codigo_prestamo, motivo_prestamo, prestamo_estatus_id, monto_solicitado, cuotas_pactadas, porcentaje_interes)
 SELECT u.usuario_id,
-       c.codigo_prestamo,  -- Toma el codigo_prestamo directamente de la tabla clientes
-       c.motivo_prestamo,  -- Asegúrate de que esta columna exista en clientes
-       pe.estatus_id,      -- Obtiene el ID del estatus del catálogo
-       c.monto_solicitado,  -- Asegúrate de que esta columna exista en clientes
-       c.cuotas_pactadas,   -- Asegúrate de que esta columna exista en clientes
-       c.porcentaje_interes  -- Asegúrate de que esta columna exista en clientes
+       c.codigo_prestamo,  
+       c.motivo_prestamo,  
+       pe.estatus_id,     
+       c.monto_solicitado,  
+       c.cuotas_pactadas,   
+       c.porcentaje_interes  
 FROM clientes c
-JOIN usuarios u ON c.codigo_cliente = u.codigo_cliente  -- Relaciona clientes con usuarios
-JOIN prestamo_estatus pe ON pe.descripcion = c.prestamo_estatus;  -- Relaciona con el estatus en clientes
+JOIN usuarios u ON c.codigo_cliente = u.codigo_cliente  
+JOIN prestamo_estatus pe ON pe.descripcion = c.prestamo_estatus;  
 
 
 CREATE TABLE cargos_administrativos (
@@ -233,11 +233,11 @@ CREATE TABLE cargos_administrativos (
 
 INSERT INTO cargos_administrativos (prestamo_id, prestamo_iva, prestamo_cargos_administrativos, prestamo_total)
 SELECT p.prestamo_id,
-       c.prestamo_iva,  -- Asegúrate de que esta columna exista en clientes
-       c.prestamo_cargos_administrativos,  -- Asegúrate de que esta columna exista en clientes
-       c.prestamo_total  -- Asegúrate de que esta columna exista en clientes
+       c.prestamo_iva,  
+       c.prestamo_cargos_administrativos,  
+       c.prestamo_total 
 FROM clientes c
-JOIN prestamo p ON c.codigo_prestamo = p.codigo_prestamo;  -- Relaciona clientes con préstamos
+JOIN prestamo p ON c.codigo_prestamo = p.codigo_prestamo;  
 
 CREATE TABLE referencias (
     referencia_id SERIAL PRIMARY KEY,
@@ -312,7 +312,7 @@ SELECT u.usuario_id,
        c.referencia4_segundo_apellido,
        c.referencia4_telefono
 FROM clientes c
-JOIN usuarios u ON c.codigo_cliente = u.codigo_cliente;  -- Relaciona clientes con usuarios
+JOIN usuarios u ON c.codigo_cliente = u.codigo_cliente;  
 
 
 CREATE TABLE validadores (
@@ -324,7 +324,7 @@ CREATE TABLE validadores (
 INSERT INTO validadores (validador_nombre)
 SELECT DISTINCT validacion1_validado_por
 FROM pagos_realizados
-WHERE validacion1_validado_por IS NOT NULL;  -- Asegúrate de no insertar valores nulos
+WHERE validacion1_validado_por IS NOT NULL;  
 
 ALTER TABLE usuarios
 ALTER COLUMN codigo_cliente DROP NOT NULL;
